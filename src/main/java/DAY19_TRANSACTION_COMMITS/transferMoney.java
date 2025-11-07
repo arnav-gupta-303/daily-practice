@@ -1,5 +1,6 @@
 package DAY19_TRANSACTION_COMMITS;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.Scanner;
 
@@ -67,10 +68,12 @@ public class transferMoney {
     }
 
     private static void transfermoney(Connection connection, int fromAcc, int toAcc, double transfermoney) {
-        try(PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO transfermoney (fromAcc,toAcc,transfermoney) values (?,?,?)")){
+        try(PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO transfermoney (fromAcc,toAcc,transferamount) values (?,?,?)")){
             preparedStatement.setInt(1,fromAcc);
             preparedStatement.setInt(2,toAcc);
             preparedStatement.setDouble(3,transfermoney);
+            int i1 = preparedStatement.executeUpdate();
+            System.out.println("ROWS UPDATED IN TRANSFER MOEY TABLE :" +i1);
             try(PreparedStatement ps= connection.prepareStatement("UPDATE accounts SET balance = balance - ? WHERE account_no = ?")) {
                 ps.setDouble(1,transfermoney);
                 ps.setInt(2,fromAcc);
